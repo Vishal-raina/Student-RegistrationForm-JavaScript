@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Form</title>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.top-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    margin-top: 40px;
+}
+
+.image-box img {
+    width: 160px;
+}
+
+.form-box {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px);
+    padding: 22px;
+    width: 340px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    color: white;
+}
+
+label {
+    display: inline-block;
+    width: 70px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select {
+    width: 210px;
+    padding: 7px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    margin-bottom: 12px;
+}
+
+.gender-group {
+    display: inline-flex;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.gender-group input {
+    display: none;
+}
+
+.gender-group label {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: 0.3s;
+    width: auto;
+}
+
+.gender-group input:checked + label {
+    background: linear-gradient(90deg, #00f260, #0575e6);
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #ff512f, #dd2476);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.06);
+}
+
+table {
+    margin: 40px auto;
+    width: 90%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+th {
+    background: #111;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+.delete-btn {
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.fade-out {
+    animation: fadeSlide 0.6s forwards;
+}
+
+@keyframes fadeSlide {
+    to {
+        opacity: 0;
+        transform: translateX(120px);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-section">
+
+<div class="image-box">
+    <img src="schoolboy.gif" alt="School Boy">
+</div>
+
+<div class="form-box">
+<center>
+<h3>STUDENT FORM</h3>
+
+<label>Name</label>
+<input type="text" id="name"><br>
+
+<label>Age</label>
+<input type="number" id="age"><br>
+
+<label>Gender</label>
+<div class="gender-group">
+    <input type="radio" id="male" name="gender" value="Male">
+    <label for="male">Male</label>
+
+    <input type="radio" id="female" name="gender" value="Female">
+    <label for="female">Female</label>
+</div>
+<br><br>
+
+<label>Course</label>
+<select id="course">
+    <option>JavaScript</option>
+    <option>Python</option>
+    <option>Java</option>
+</select><br>
+
+<label>Email</label>
+<input type="email" id="email"><br>
+
+<button onclick="saveData()">Save</button>
+</center>
+</div>
+
+</div>
+
+<table id="table">
+<tr>
+    <th>NAME</th>
+    <th>AGE</th>
+    <th>COURSE</th>
+    <th>GENDER</th>
+    <th>EMAIL</th>
+    <th>ACTION</th>
+</tr>
+</table>
+
+<script>
+function saveData() {
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let course = document.getElementById("course").value;
+    let email = document.getElementById("email").value;
+
+    let gender = "";
+    let genders = document.getElementsByName("gender");
+    for (let g of genders) {
+        if (g.checked) gender = g.value;
+    }
+
+    if (!name || !age || !gender || !email) {
+        alert("Fill all details");
+        return;
+    }
+
+    let table = document.getElementById("table");
+    let row = table.insertRow();
+
+    row.insertCell(0).innerText = name;
+    row.insertCell(1).innerText = age;
+    row.insertCell(2).innerText = course;
+    row.insertCell(3).innerText = gender;
+    row.insertCell(4).innerText = email;
+    row.insertCell(5).innerHTML =
+        `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
+
+    document.getElementById("name").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("email").value = "";
+    genders.forEach(g => g.checked = false);
+}
+
+function deleteRow(btn) {
+    let row = btn.parentNode.parentNode;
+    row.classList.add("fade-out");
+    setTimeout(() => row.remove(), 600);
+}
+</script>
+
+</body>
+</html>
